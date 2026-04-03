@@ -1,0 +1,68 @@
+{
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/mcpb/main/schemas/manifest.schema.json",
+  "manifest_version": "0.3",
+  "name": "trustmrr-mcp",
+  "display_name": "TrustMRR Startup Intelligence",
+  "version": "1.0.0",
+  "description": "Browse and filter verified startup revenue data from TrustMRR. Filter by MRR, growth, asking price, category, and more \u2014 all backed by real payment provider data.",
+  "long_description": "TrustMRR MCP gives Claude direct access to the TrustMRR API, which surfaces verified startup revenue metrics sourced from Stripe, LemonSqueezy, Polar, Paddle, and other payment providers.\n\nTools included:\n- list_startups: paginated startup discovery with 15+ filter/sort parameters\n- get_startup: full detail for a single startup including tech stack, cofounders, social metrics, and extended financials\n\nAll monetary values are returned in USD cents and converted to human-readable USD in tool descriptions. Rate limit: 20 requests/minute.",
+  "author": {
+    "name": "Khawaja Ventures LLC",
+    "email": "zakir@khawaja.ventures",
+    "url": "https://github.com/SatoshiPierogi"
+  },
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/server/index.js"
+      ],
+      "env": {
+        "TRUSTMRR_API_KEY": "${user_config.api_key}",
+        "NODE_PATH": "${__dirname}/node_modules"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "list_startups",
+      "description": "Browse and filter the TrustMRR startup directory. Returns paginated results with verified revenue, MRR, growth, asking price, and more. Supports filtering by category, revenue range, sale status, founder X handle, and sorting by revenue, price, growth, or best deal."
+    },
+    {
+      "name": "get_startup",
+      "description": "Get full details for a single startup by slug. Returns everything from list_startups plus: full (untruncated) description, tech stack, cofounders, X follower count, and merchant-of-record status."
+    }
+  ],
+  "tools_generated": false,
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "TrustMRR API Key",
+      "description": "Your TrustMRR API key. Generate one from https://trustmrr.com/developer \u2014 keys start with tmrr_.",
+      "required": true,
+      "sensitive": true
+    }
+  },
+  "compatibility": {
+    "claude_desktop": ">=0.10.0",
+    "platforms": [
+      "darwin",
+      "win32",
+      "linux"
+    ],
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  },
+  "keywords": [
+    "startup",
+    "revenue",
+    "mrr",
+    "saas",
+    "acquisition",
+    "finance"
+  ],
+  "license": "MIT"
+}
